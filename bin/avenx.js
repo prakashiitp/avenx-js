@@ -2,6 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
+const { exec } = require('child_process');
 const AvenxCompiler = require('../lib/compiler');
 
 const [, , command, ...args] = process.argv;
@@ -26,6 +28,9 @@ class AvenxCLI {
                 break;
             case 'build':
                 this.buildProject();
+                break;
+            case 'serve':
+                this.serveProject(args[0] || 3000);
                 break;
             case 'help':
             default:
@@ -170,6 +175,87 @@ class AvenxCLI {
         new AvenxCompiler().build();
     }
 
+    /**
+     * Starts a local development server and watches for changes.
+     */
+    serveProject(port) {
+        this.buildProject();
+        this.watchProject();
+
+        const server = http.createServer((req, res) => {
+            let filePath = path.join(this.baseDir, req.url === '/' ? 'index.html' : req.url);
+            
+            // Support extensionless routes or handle missing files
+            if (!fs.existsSync(filePath) && !path.extname(filePath)) {
+                filePath = path.join(this.baseDir, 'index.html');
+            }
+
+            const extname = String(path.extname(filePath)).toLowerCase();
+            const mimeTypes = {
+                '.html': 'text/html',
+                '.js': 'text/javascript',
+                '.css': 'text/css',
+                '.json': 'application/json',
+                '.png': 'image/png',
+                '.jpg': 'image/jpg',
+                '.gif': 'image/gif',
+                '.svg': 'image/svg+xml',
+            };
+
+            const contentType = mimeTypes[extname] || 'application/octet-stream';
+
+            fs.readFile(filePath, (error, content) => {
+                if (error) {
+                    if (error.code === 'ENOENT') {
+                        res.writeHead(404);
+                        res.end('File not found');
+                    } else {
+                        res.writeHead(500);
+                        res.end('Server error: ' + error.code);
+                    }
+                } else {
+                    res.writeHead(200, { 'Content-Type': contentType });
+                    res.end(content, 'utf-8');
+                }
+            });
+        });
+
+        server.listen(port, () => {
+            const url = `http://localhost:${port}`;
+            console.log(`\n🚀 Dev-Server running at ${url}`);
+            console.log(`👀 Watching for changes in src/...\n`);
+            this.openBrowser(url);
+        });
+    }
+
+    /**
+     * Watches the src directory for changes and triggers a rebuild.
+     */
+    watchProject() {
+        let timeout;
+        const srcPath = path.join(this.baseDir, 'src');
+
+        if (!fs.existsSync(srcPath)) return;
+
+        fs.watch(srcPath, { recursive: true }, (eventType, filename) => {
+            if (filename) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    console.log(`\n📄 Change detected: ${filename}. Rebuilding...`);
+                    this.buildProject();
+                }, 100);
+            }
+        });
+    }
+
+    /**
+     * Opens the browser to the specified URL.
+     */
+    openBrowser(url) {
+        const start = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
+        exec(`${start} ${url}`);
+    }
+
     getInitialHtml() {
         return `<!DOCTYPE html>
 <html>
@@ -193,6 +279,7 @@ Commands:
   init              Initialize a new Avenx project structure
   generate <name>   Generate a new component (alias: g)
   build             Build the project into dist/bundle.js
+  serve [port]      Start dev server with hot-reload (default: 3000)
   help              Show this help message
         `);
     }

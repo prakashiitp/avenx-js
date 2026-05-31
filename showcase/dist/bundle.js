@@ -235,62 +235,25 @@ class AvenxApp {
     }
 }
 
-class Counter extends AvenxComponent {
+class Footer extends AvenxComponent {
     constructor(bridges) {
-        super({"count":0,"step":1}, bridges, `<div class="avenx-36f2fd3e">
-    <h1 @click="count = 0">
-        Avenx-JS @css PoC
-    </h1>
-    <div>
-        {{ count }}
-    </div>
-    <button @click="count += step; log()">
-        Erhöhen (+{{ step }})
-    </button>
-</div>`, { log: `console.log("Neuer Stand:", count);` });
+        super({}, bridges, `<footer class="avenx-de46dfbd">
+    Powered by <span class="avenx-c92d1ef5">Avenx-JS</span>
+</footer>`, {  });
     }
 }
-class Display extends AvenxComponent {
+class Test extends AvenxComponent {
     constructor(bridges) {
-        super({}, bridges, `<div>
-    <div>
-        Globaler Brücken-Zähler
+        super({"count":0}, bridges, `<div class="avenx-5a325b60"
+    <h1 class="avenx-d77148f1">Avenx Framework</h1>
+    <div class="avenx-3b955f89">
+        <span class="avenx-eeba9fbc">Reactive Counter</span>
+        <span class="avenx-1eebea02">{{ count }}</span>
     </div>
-    <div>
-        {{ CounterBridge.count }}
+    <div class="avenx-b1bc0732">
+        <button @click="count++" class="avenx-2483220a">Increment</button>
+        <button @click="reset()" class="avenx-46ba7228">Reset</button>
     </div>
-</div>`, {  });
-    }
-}
-class Source extends AvenxComponent {
-    constructor(bridges) {
-        super({}, bridges, `<div>
-    <div>
-        Brücken-Steuerung
-    </div>
-    <button @click="CounterBridge.count++">
-        Zähler erhöhen
-    </button>
-</div>`, {  });
-    }
-}
-class TestComp extends AvenxComponent {
-    constructor(bridges) {
-        super({"count":0}, bridges, `<div class="avenx-ed153e1d">
-    <h1>Test-comp Component</h1>
-    <p>Current count: {{ count }}</p>
-    <button @click="count++">Increment</button>
-    <button @click="reset()">Reset</button>
-</div>`, { reset: `count = 0;` });
-    }
-}
-class UserProfile extends AvenxComponent {
-    constructor(bridges) {
-        super({"count":0}, bridges, `<div class="avenx-87b2c0b9">
-    <h1 class="avenx-b965a092">UserProfile Component</h1>
-    <p class="avenx-99bdf38c">Current count: {{ count }}</p>
-    <button @click="count++" class="avenx-4beeefa1">Increment</button>
-    <button @click="reset()" class="avenx-4beeefa1">Reset</button>
 </div>`, { reset: `count = 0;` });
     }
 }
@@ -299,18 +262,18 @@ class UserProfile extends AvenxComponent {
 
 
 
-
 const app = new AvenxApp({ target: '#app' });
-app.registerBridge('CounterBridge', {
-    count: 0
-});
 
+app.register('Test', Test);
+app.register('Footer', Footer);
 
-app.register('Source', Source);
-app.register('Display', Display);
-app.register('UserProfile', UserProfile);
+app.mount('Test');
 
-app.mount('Source', '#source');
-app.mount('Display', '#display');
+// Since we cannot modify index.html, we create a mount point for the footer programmatically
+const footerMount = document.createElement('div');
+footerMount.id = 'footer-app';
+document.body.appendChild(footerMount);
+
+app.mount('Footer', '#footer-app');
 
 })();

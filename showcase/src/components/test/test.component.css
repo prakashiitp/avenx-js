@@ -1,0 +1,92 @@
+<@global>
+    @def primary #4f46e5;
+    @def primary-hover #4338ca;
+    @def secondary #64748b;
+    @def secondary-hover #475569;
+    @def dark #0f172a;
+    @def white #ffffff;
+    @def gray-100 #f1f5f9;
+</ @global>
+
+<@css>
+    container {
+        padding: 2.5rem;
+        background: @white;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    title {
+        color: @dark;
+        font-size: 1.875rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.025em;
+    }
+
+    counter-box {
+        background: @gray-100;
+        padding: 1rem;
+        border-radius: 0.75rem;
+        margin: 1.5rem 0;
+    }
+
+    text {
+        font-size: 1.125rem;
+        color: @secondary;
+        font-weight: 500;
+    }
+
+    count {
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: @primary;
+        display: block;
+        margin-top: 0.25rem;
+    }
+
+    button-group {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+    }
+
+    btn-primary {
+        background: @primary;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+
+        &:hover {
+            background: @primary-hover;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    btn-secondary {
+        background: @secondary;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: @secondary-hover;
+        }
+    }
+</ @css>
