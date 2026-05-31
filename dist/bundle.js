@@ -41,7 +41,6 @@ class AvenxComponent {
      */
     constructor(initialState = {}, bridges = {}, template = '', methods = {}) {
         this.#template = template;
-        this.#methods = methods;
         this.#bridges = bridges;
         const self = this;
 
@@ -60,6 +59,17 @@ class AvenxComponent {
                 return target[key];
             }
         });
+
+        // Turn action code strings into executable functions with state context
+        this.#methods = {};
+        for (let [key, code] of Object.entries(methods)) {
+            const self = this;
+            this.#methods[key] = function(...args) {
+                const context = { ...self.state, ...self.#methods, ...self.#bridges, args };
+                const fn = new Function(...Object.keys(context), `with(this) { ${code} }`);
+                return fn.call(self.state, ...Object.values(context));
+            }.bind(this.state);
+        }
     }
 
     /**
@@ -227,26 +237,26 @@ class AvenxApp {
 
 class Counter extends AvenxComponent {
     constructor(bridges) {
-        super({"count":0,"step":1}, bridges, `<div class="avenx-0ed6f557">
-    <h1 @click="count = 0" class="avenx-79ea59de">
+        super({"count":0,"step":1}, bridges, `<div class="avenx-36f2fd3e">
+    <h1 @click="count = 0">
         Avenx-JS @css PoC
     </h1>
-    <div class="avenx-f7055a1d">
+    <div>
         {{ count }}
     </div>
-    <button @click="count += step; log()" class="avenx-eb8ffbce">
+    <button @click="count += step; log()">
         Erhöhen (+{{ step }})
     </button>
-</div>`, { log: function() { console.log("Neuer Stand:", count); } });
+</div>`, { log: `console.log("Neuer Stand:", count);` });
     }
 }
 class Display extends AvenxComponent {
     constructor(bridges) {
-        super({}, bridges, `<div class="avenx-62dd4a60">
-    <div class="avenx-c41765ff">
+        super({}, bridges, `<div>
+    <div>
         Globaler Brücken-Zähler
     </div>
-    <div class="avenx-6fdac250">
+    <div>
         {{ CounterBridge.count }}
     </div>
 </div>`, {  });
@@ -254,17 +264,38 @@ class Display extends AvenxComponent {
 }
 class Source extends AvenxComponent {
     constructor(bridges) {
-        super({}, bridges, `<div class="avenx-a884e875">
-    <div class="avenx-9fcee83a">
+        super({}, bridges, `<div>
+    <div>
         Brücken-Steuerung
     </div>
-    <button @click="CounterBridge.count++" class="avenx-3b328fad">
+    <button @click="CounterBridge.count++">
         Zähler erhöhen
     </button>
 </div>`, {  });
     }
 }
+class TestComp extends AvenxComponent {
+    constructor(bridges) {
+        super({"count":0}, bridges, `<div class="avenx-ed153e1d">
+    <h1>Test-comp Component</h1>
+    <p>Current count: {{ count }}</p>
+    <button @click="count++">Increment</button>
+    <button @click="reset()">Reset</button>
+</div>`, { reset: `count = 0;` });
+    }
+}
+class UserProfile extends AvenxComponent {
+    constructor(bridges) {
+        super({"count":0}, bridges, `<div class="avenx-87b2c0b9">
+    <h1 class="avenx-b965a092">UserProfile Component</h1>
+    <p class="avenx-99bdf38c">Current count: {{ count }}</p>
+    <button @click="count++" class="avenx-4beeefa1">Increment</button>
+    <button @click="reset()" class="avenx-4beeefa1">Reset</button>
+</div>`, { reset: `count = 0;` });
+    }
+}
 (function(){
+
 
 
 
@@ -277,6 +308,7 @@ app.registerBridge('CounterBridge', {
 
 app.register('Source', Source);
 app.register('Display', Display);
+app.register('UserProfile', UserProfile);
 
 app.mount('Source', '#source');
 app.mount('Display', '#display');

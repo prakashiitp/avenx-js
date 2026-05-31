@@ -1,0 +1,21 @@
+<@global>
+    @def primary #6366f1;
+    @def dark #1e1b4b;
+</ @global>
+
+<@css>
+    container {
+        padding: 1rem;
+        border: 1px solid @dark;
+        border-radius: 0.5rem;
+    }
+
+    button {
+        background: @primary;
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+    }
+</ @css>

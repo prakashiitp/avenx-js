@@ -1,0 +1,21 @@
+{
+  "name": "avenx-js",
+  "version": "1.0.0",
+  "description": "A lightweight reactive framework with scoped CSS and custom components.",
+  "main": "lib/compiler.js",
+  "bin": {
+    "avenx": "bin/avenx.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "reactive",
+    "framework",
+    "compiler",
+    "css-in-js",
+    "scoped-css"
+  ],
+  "author": "",
+  "license": "MIT"
+}
