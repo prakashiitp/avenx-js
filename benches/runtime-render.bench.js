@@ -2,9 +2,29 @@ const fs = require('fs');
 const path = require('path');
 const { performance } = require('perf_hooks');
 
-// Load AvenxComponent by stripping export (simulating what the compiler does for bundling)
-const componentCode = fs.readFileSync(path.join(__dirname, '../lib/runtime/AvenxComponent.js'), 'utf-8')
-    .replace(/export /g, '');
+// Load the runtime by stripping imports/exports, matching compiler bundling.
+const runtimeFiles = [
+    'security/evaluator.js',
+    'reactive/proxyHandler.js',
+    'reactive/createState.js',
+    'reactive/createComputed.js',
+    'renderer/renderTemplate.js',
+    'renderer/domPatch.js',
+    'events/eventExecutor.js',
+    'events/bindEvents.js',
+    'runtime/lifecycle.js',
+    'runtime/AvenxBridge.js',
+    'runtime/AvenxComponent.js',
+    'runtime/AvenxApp.js'
+];
+
+const componentCode = runtimeFiles
+    .map(file => fs.readFileSync(path.join(__dirname, '../lib/core', file), 'utf-8'))
+    .map(source => source
+        .replace(/^import\s+.*?;\s*$/gm, '')
+        .replace(/export\s+/g, '')
+    )
+    .join('\n');
 
 // Create a sandbox to "eval" the class into the current scope
 const AvenxComponent = (function() {

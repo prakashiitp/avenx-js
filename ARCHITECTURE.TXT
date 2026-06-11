@@ -1,0 +1,34 @@
+├─ core/
+│  ├─ runtime/
+│  │   ├─ AvenxComponent.js
+│  │   └─ lifecycle.js
+│  │
+│  ├─ reactive/
+│  │   ├─ createState.js
+│  │   ├─ createComputed.js
+│  │   └─ proxyHandler.js
+│  │
+│  ├─ renderer/
+│  │   ├─ renderTemplate.js
+│  │   ├─ diff.js
+│  │   └─ domPatch.js
+│  │
+│  ├─ events/
+│  │   ├─ bindEvents.js
+│  │   └─ eventExecutor.js
+│  │
+│  ├─ security/
+│  │   ├─ escapeHtml.js
+│  │   └─ sanitize.js
+│  │
+│  └─ index.js
+│
+├─ compiler/
+│  ├─ templateParser.js
+│  ├─ expressionParser.js
+│  └─ transform.js
+│
+├─ cli/
+│  ├─ dev.js
+│  ├─ build.js
+│  └─ serve.js

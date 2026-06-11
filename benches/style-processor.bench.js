@@ -1,5 +1,5 @@
 const { performance } = require('perf_hooks');
-const StyleProcessor = require('../lib/core/StyleProcessor');
+const StyleProcessor = require('../lib/compiler/StyleProcessor');
 
 function benchmark() {
     const iterations = 5000;
