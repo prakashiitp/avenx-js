@@ -20,6 +20,11 @@ try {
             addEventListener(event, callback) {
                 listeners[event] = callback;
             },
+            removeEventListener(event, callback) {
+                if (listeners[event] === callback) {
+                    delete listeners[event];
+                }
+            },
             querySelectorAll(selector) {
                 if (selector === '*') {
                     const result = [];
@@ -69,7 +74,7 @@ try {
     // 2. Descendant elements also have event listeners
     const childEl = createMockElement('BUTTON', { '@input': 'handleInput' });
     const rootWithChild = createMockElement('DIV', { '@click': 'parentClick' }, [childEl]);
-    
+
     binder.bind(rootWithChild, dispatcher);
 
     // Trigger parent
@@ -90,6 +95,26 @@ try {
     executedSource = null;
     childEl.trigger('input', { type: 'input' });
     assert.strictEqual(executedSource, 'handleInput');
+
+    // 4. unbind removes event listeners
+    const unbindEl = createMockElement('BUTTON', { '@click': 'cleanupHandler' });
+
+    const binder3 = new EventBinder();
+    binder3.bind(unbindEl, dispatcher);
+
+    executedSource = null;
+    unbindEl.trigger('click', { type: 'click' });
+    assert.strictEqual(executedSource, 'cleanupHandler');
+
+    binder3.unbind(unbindEl);
+
+    executedSource = null;
+    unbindEl.trigger('click', { type: 'click' });
+    assert.strictEqual(
+        executedSource,
+        null,
+        'Event listener should be removed after unbind()'
+    );
 
     console.log('  ✅ EventBinder tests passed!');
 } catch (error) {
