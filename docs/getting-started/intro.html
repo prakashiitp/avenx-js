@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avenx-JS | Introduction</title>
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="Learn about Avenx-JS, a lightweight experimental reactive frontend framework with scoped CSS and custom components.">
+    <meta name="keywords" content="Avenx-JS, frontend framework, reactive framework, scoped CSS, single file component, javascript router">
+    <meta name="author" content="Avenx Team">
+    
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Google Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <!-- App Container -->
+    <div class="app-layout">
+        
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="header-left">
+                <!-- Hamburger Button for Mobile -->
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Navigation Menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <a href="../getting-started/intro.html" class="logo">
+                    <span class="material-symbols-outlined logo-icon">rocket_launch</span>
+                    <span class="logo-text">Avenx<span class="logo-accent">-JS</span></span>
+                </a>
+                <span class="version-tag">v0.4.3</span>
+            </div>
+            
+            <div class="header-right">
+                <!-- Search Bar Container -->
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">
+                            <span class="material-symbols-outlined">search</span>
+                        </span>
+                        <input type="text" id="search-input" placeholder="Search docs... (Press '/' to focus)" aria-label="Search Documentation">
+                        <button id="clear-search" class="clear-search-btn" style="display: none;" aria-label="Clear Search">&times;</button>
+                    </div>
+                    <!-- Search Results Dropdown -->
+                    <div id="search-results" class="search-results-dropdown" style="display: none;"></div>
+                </div>
+                
+                <!-- Dark/Light Theme Toggle -->
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode">
+                    <span class="theme-icon-sun">
+                        <span class="material-symbols-outlined">light_mode</span>
+                    </span>
+                    <span class="theme-icon-moon">
+                        <span class="material-symbols-outlined">dark_mode</span>
+                    </span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Wrapper -->
+        <div class="main-container">
+            <!-- Sidebar Navigation -->
+            <aside class="app-sidebar" id="app-sidebar">
+                <nav class="sidebar-nav" id="sidebar-nav">
+                                        <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="getting-started">Getting Started</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../getting-started/intro.html" class="nav-page-link active" data-page-id="intro">Introduction</a></li>
+                            <li><a href="../getting-started/install.html" class="nav-page-link" data-page-id="install">Installation</a></li>
+                            <li><a href="../getting-started/quickstart.html" class="nav-page-link" data-page-id="quickstart">Quick Start Tutorial</a></li>
+                            <li><a href="../getting-started/structure.html" class="nav-page-link" data-page-id="structure">Project Structure</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="core-concepts">Core Concepts</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../core-concepts/components.html" class="nav-page-link" data-page-id="concepts-components">Component Structure</a></li>
+                            <li><a href="../core-concepts/reactivity.html" class="nav-page-link" data-page-id="concepts-reactivity">Reactive State</a></li>
+                            <li><a href="../core-concepts/computed.html" class="nav-page-link" data-page-id="concepts-computed">Computed Properties</a></li>
+                            <li><a href="../core-concepts/events.html" class="nav-page-link" data-page-id="concepts-events">Actions & Event Handling</a></li>
+                            <li><a href="../core-concepts/templates.html" class="nav-page-link" data-page-id="concepts-templates">Templates & Slots</a></li>
+                            <li><a href="../core-concepts/styling.html" class="nav-page-link" data-page-id="concepts-styling">Scoped & Global CSS</a></li>
+                            <li><a href="../core-concepts/bridges.html" class="nav-page-link" data-page-id="concepts-bridges">Shared State & Bridges</a></li>
+                            <li><a href="../core-concepts/routing.html" class="nav-page-link" data-page-id="concepts-routing">Pages & Routing</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="cli-reference">CLI Reference</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../cli-reference/commands.html" class="nav-page-link" data-page-id="cli-commands">CLI Commands</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="api-reference">API Reference</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../api-reference/app.html" class="nav-page-link" data-page-id="api-app">AvenxApp API</a></li>
+                            <li><a href="../api-reference/component.html" class="nav-page-link" data-page-id="api-component">AvenxComponent API</a></li>
+                            <li><a href="../api-reference/page.html" class="nav-page-link" data-page-id="api-page">AvenxPage API</a></li>
+                            <li><a href="../api-reference/router-guard.html" class="nav-page-link" data-page-id="api-router-guard">AvenxRouter & Guard API</a></li>
+                            <li><a href="../api-reference/utils.html" class="nav-page-link" data-page-id="api-utils">Utility Functions</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="troubleshooting">Troubleshooting</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../troubleshooting/errors.html" class="nav-page-link" data-page-id="errors-reference">Error Codes</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="best-practices">Best Practices</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../best-practices/guide.html" class="nav-page-link" data-page-id="best-practices-guide">Best Practices</a></li>
+                        </ul>
+                    </div>
+
+                </nav>
+            </aside>
+            
+            <!-- Backdrop for Mobile Sidebar -->
+            <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+            <!-- Content Area -->
+            <main class="content-wrapper">
+                <!-- Breadcrumbs -->
+                <div class="breadcrumbs-container">
+                    <nav class="breadcrumbs" id="breadcrumbs" aria-label="Breadcrumb">
+                        <span class="crumb"><a href="../getting-started/intro.html">Docs</a></span>
+                        <span class="crumb-separator">/</span>
+                        <span class="crumb" id="crumb-section">Getting Started</span>
+                        <span class="crumb-separator">/</span>
+                        <span class="crumb active" id="crumb-page">Introduction</span>
+                    </nav>
+                </div>
+                
+                <!-- Main Reading Pane -->
+                <div class="article-content" id="article-content">
+                    <article class="doc-page active" id="page-intro" data-keywords="introduction philosophy about reactive experimental scoped css">
+<h1>Introduction to Avenx-JS</h1>
+                        <p class="lead">Avenx-JS is a lightweight, experimental frontend framework designed for simplicity and performance.</p>
+                        <p>Modern frontend frameworks often demand complex build setups, extensive configuration, and heavy runtime libraries. Avenx-JS explores an alternative path: it couples a custom compiler-driven component model with zero runtime dependencies and Proxy-based reactivity. This provides a cohesive, developer-friendly experience out of the box.</p>
+                        
+                        <div class="alert note">
+                            <strong>Philosophy:</strong> Write clean, standard-compliant HTML, CSS, and JS, and let the compiler handle scoping, bundling, and optimization.
+                        </div>
+
+                        <h2>✨ Key Features</h2>
+                        <ul class="feature-list">
+                            <li>
+                                <strong>🔄 Proxy-Based Transparent Reactivity</strong>
+                                <p>No <code>useState</code>, <code>setState</code>, or manual component updates. Property changes on the state object trigger selective DOM updates automatically.</p>
+                            </li>
+                            <li>
+                                <strong>🧩 Declarative SFC (Single File Components)</strong>
+                                <p>Keep your template, local state, computed values, and actions together in a single <code>.component.js</code> file, alongside a scoped <code>.component.css</code>.</p>
+                            </li>
+                            <li>
+                                <strong>🎨 Intelligent Scoped CSS</strong>
+                                <p>Styles defined in your component's CSS file are scoped automatically via unique hashes. Global variables are handled seamlessly using custom <code>@def</code> rules.</p>
+                            </li>
+                            <li>
+                                <strong>🌐 Shared Bridges (Global State)</strong>
+                                <p>Subscribe to and share global reactive state objects easily across multiple components with zero boilerplate.</p>
+                            </li>
+                            <li>
+                                <strong>🛠️ CLI-First Tooling</strong>
+                                <p>Scaffold, build, run a hot-reloading development server, and generate pages, components, bridges, or guards instantly with the <code>avenx</code> CLI.</p>
+                            </li>
+                        </ul>
+</article>
+                </div>
+                
+                <!-- Page Navigation Footer -->
+                <footer class="page-footer">
+                                        <div class="footer-nav-btn prev" style="visibility: hidden;"></div>
+                    <a href="../getting-started/install.html" id="next-page-btn" class="footer-nav-btn next">
+                        <div class="btn-labels">
+                            <span class="nav-direction">Next</span>
+                            <span class="nav-title" id="next-page-title">Installation</span>
+                        </div>
+                        <span class="material-symbols-outlined arrow">east</span>
+                    </a>
+
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Script Files -->
+    <script>
+        window.CURRENT_PAGE = {
+            id: "intro",
+            category: "getting-started",
+            filename: "intro.html"
+        };
+    </script>
+    <script src="../search-index.js"></script>
+    <script src="../app.js"></script>
+</body>
+
+</html>

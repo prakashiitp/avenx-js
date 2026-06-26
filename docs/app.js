@@ -1,75 +1,16 @@
 /**
- * Avenx-JS Docs Application Client-Side Controller (HTML-First)
- * Handles routing, DOM-based search, syntax highlighting, mobile drawer, and themes.
+ * Avenx-JS Docs Application Client-Side Controller
+ * Handles multi-page search, theme persistence, code highlighting, and mobile navigation drawer.
  */
 
 (function () {
     'use strict';
 
-    // Cache DOM Elements
-    const sidebarNav = document.getElementById('sidebar-nav');
-    const prevPageBtn = document.getElementById('prev-page-btn');
-    const prevPageTitle = document.getElementById('prev-page-title');
-    const nextPageBtn = document.getElementById('next-page-btn');
-    const nextPageTitle = document.getElementById('next-page-title');
-    const themeToggle = document.getElementById('theme-toggle');
-    const mobileToggle = document.getElementById('mobile-toggle');
-    const sidebar = document.getElementById('app-sidebar');
-    const sidebarBackdrop = document.getElementById('sidebar-backdrop');
-    
-    const searchInput = document.getElementById('search-input');
-    const clearSearchBtn = document.getElementById('clear-search');
-    const searchResults = document.getElementById('search-results');
-    
-    const crumbSection = document.getElementById('crumb-section');
-    const crumbPage = document.getElementById('crumb-page');
-
     // State Variables
-    let currentPageId = 'intro';
-    let flatPages = [];
+    let searchInput, clearSearchBtn, searchResults;
+    let sidebar, sidebarBackdrop, themeToggle, mobileToggle;
 
-    // Initialize Flat Pages list dynamically from the DOM (HTML-first content)
-    function initFlatPages() {
-        flatPages = [];
-        const pageElements = document.querySelectorAll('.doc-page');
-        
-        pageElements.forEach(el => {
-            const id = el.id.replace(/^page-/, '');
-            const h1El = el.querySelector('h1');
-            const pageTitle = h1El ? h1El.textContent.trim() : 'Untitled Page';
-            
-            // Derive section title from the sidebar link relationship
-            const sidebarLink = document.querySelector(`.nav-page-link[data-page-id="${id}"]`);
-            let sectionTitle = 'Getting Started';
-            let sectionId = 'getting-started';
-            
-            if (sidebarLink) {
-                const sectionContainer = sidebarLink.closest('.sidebar-section');
-                if (sectionContainer) {
-                    const sectionTitleEl = sectionContainer.querySelector('.nav-section-title');
-                    if (sectionTitleEl) {
-                        sectionTitle = sectionTitleEl.textContent.trim();
-                        sectionId = sectionTitleEl.getAttribute('data-section') || 'getting-started';
-                    }
-                }
-            }
-
-            const keywordsAttr = el.getAttribute('data-keywords') || '';
-            const keywords = keywordsAttr.split(/\s+/).filter(kw => kw.trim().length > 0);
-
-            flatPages.push({
-                element: el,
-                id: id,
-                pageTitle: pageTitle,
-                sectionTitle: sectionTitle,
-                sectionId: sectionId,
-                keywords: keywords,
-                highlighted: false
-            });
-        });
-    }
-
-    // Highlighting engine
+    // Syntax Highlighting Engine
     function highlightJS(code) {
         return code.replace(
             /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`[\s\S]*?`)|(\b(const|let|var|function|return|class|extends|import|export|default|new|typeof|super|this|state|props|args|event|onMount|onUpdate|onUnmount)\b)|(\b(AvenxApp|AvenxComponent|AvenxPage|AvenxRouter|AvenxGuard|AvenxBridge|HtmlEscaper|SafeHtml|Sanitizer|DynamicEvaluator|LifecycleManager)\b)|(\b\d+\b)/g,
@@ -119,10 +60,8 @@
         return escaped;
     }
 
-    function highlightPageCode(page) {
-        if (page.highlighted) return;
-        
-        const codeBlocks = page.element.querySelectorAll('pre code');
+    function highlightPageCode() {
+        const codeBlocks = document.querySelectorAll('pre code');
         codeBlocks.forEach(block => {
             const codeClass = block.className || '';
             const codeText = block.textContent;
@@ -135,88 +74,98 @@
                 block.innerHTML = highlightHTML(codeText);
             }
         });
-        
-        page.highlighted = true;
     }
 
-    // Render page layout based on active ID
-    function loadRoute() {
-        let hash = window.location.hash || '#/intro';
-        let routeId = hash.replace(/^#\//, '');
-        
-        let page = flatPages.find(p => p.id === routeId);
-        if (!page) {
-            page = flatPages[0];
-            routeId = page.id;
-        }
-
-        currentPageId = routeId;
-
-        // Toggle visibility of DOM pages
-        flatPages.forEach(p => {
-            if (p.id === routeId) {
-                p.element.classList.add('active');
-                highlightPageCode(p); // Lazy highlight active page
-            } else {
-                p.element.classList.remove('active');
+    // Dynamic Code Block Enhancement (Wrapper with Language Title and Copy Button)
+    function setupCodeBlocks() {
+        const preBlocks = document.querySelectorAll('pre');
+        preBlocks.forEach(pre => {
+            if (pre.parentElement.classList.contains('code-block-container')) {
+                return;
             }
-        });
 
-        // Update Breadcrumbs
-        crumbSection.textContent = page.sectionTitle;
-        crumbPage.textContent = page.pageTitle;
-        document.title = `Avenx-JS | ${page.pageTitle}`;
+            const code = pre.querySelector('code');
+            if (!code) return;
 
-        // Update Sidebar Active Links
-        document.querySelectorAll('.nav-page-link').forEach(link => {
-            if (link.getAttribute('data-page-id') === routeId) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
+            const codeClass = code.className || '';
+            let lang = 'code';
+            if (codeClass.includes('language-javascript') || codeClass.includes('language-js')) {
+                lang = 'javascript';
+            } else if (codeClass.includes('language-css')) {
+                lang = 'css';
+            } else if (codeClass.includes('language-html')) {
+                lang = 'html';
+            } else if (codeClass.includes('language-xml')) {
+                lang = 'xml';
+            } else if (codeClass.includes('language-bash') || codeClass.includes('language-sh')) {
+                lang = 'bash';
             }
+
+            const container = document.createElement('div');
+            container.className = 'code-block-container';
+
+            const header = document.createElement('div');
+            header.className = 'code-block-header';
+
+            const langSpan = document.createElement('span');
+            langSpan.className = 'code-block-lang';
+            langSpan.textContent = lang;
+
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-code-btn';
+            copyBtn.innerHTML = '<span class="material-symbols-outlined">content_copy</span> Copy';
+
+            copyBtn.addEventListener('click', () => {
+                const textToCopy = code.textContent;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    copyBtn.innerHTML = '<span class="material-symbols-outlined">check</span> Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<span class="material-symbols-outlined">content_copy</span> Copy';
+                    }, 1500);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            });
+
+            header.appendChild(langSpan);
+            header.appendChild(copyBtn);
+
+            pre.parentNode.insertBefore(container, pre);
+            container.appendChild(header);
+            container.appendChild(pre);
         });
-
-        // Navigation Footer controls
-        const currentIndex = flatPages.findIndex(p => p.id === routeId);
-        
-        // Previous page
-        if (currentIndex > 0) {
-            const prev = flatPages[currentIndex - 1];
-            prevPageBtn.style.visibility = 'visible';
-            prevPageBtn.href = `#/${prev.id}`;
-            prevPageTitle.textContent = prev.pageTitle;
-        } else {
-            prevPageBtn.style.visibility = 'hidden';
-        }
-
-        // Next page
-        if (currentIndex < flatPages.length - 1) {
-            const next = flatPages[currentIndex + 1];
-            nextPageBtn.style.visibility = 'visible';
-            nextPageBtn.href = `#/${next.id}`;
-            nextPageTitle.textContent = next.pageTitle;
-        } else {
-            nextPageBtn.style.visibility = 'hidden';
-        }
-
-        // Close sidebar drawer on mobile after navigation
-        closeSidebar();
-        
-        // Scroll content back to top
-        window.scrollTo(0, 0);
     }
 
-    // Toggle navigation drawer on mobile
-    function openSidebar() {
-        sidebar.classList.add('open');
-        sidebarBackdrop.classList.add('show');
-        document.body.style.overflow = 'hidden'; // Lock scrolling
-    }
+    // Dynamic Alert Box Enhancement (Icon Injector)
+    function setupAlerts() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            if (alert.querySelector('.alert-icon')) {
+                return;
+            }
 
-    function closeSidebar() {
-        sidebar.classList.remove('open');
-        sidebarBackdrop.classList.remove('show');
-        document.body.style.overflow = ''; // Unlock scrolling
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'alert-icon';
+            
+            let iconName = 'info';
+            if (alert.classList.contains('warning')) {
+                iconName = 'warning';
+            } else if (alert.classList.contains('tip') || alert.classList.contains('note')) {
+                iconName = 'info';
+            }
+            
+            iconSpan.innerHTML = `<span class="material-symbols-outlined">${iconName}</span>`;
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'alert-content';
+            
+            while (alert.firstChild) {
+                contentDiv.appendChild(alert.firstChild);
+            }
+            
+            alert.appendChild(iconSpan);
+            alert.appendChild(contentDiv);
+        });
     }
 
     // Theme Management
@@ -225,6 +174,7 @@
         document.documentElement.setAttribute('data-theme', storedTheme);
     }
 
+    // Toggle Dark/Light Mode
     function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -232,7 +182,28 @@
         localStorage.setItem('theme', newTheme);
     }
 
-    // Search functionality (DOM based)
+    // Mobile Sidebar Drawer
+    function openSidebar() {
+        sidebar.classList.add('open');
+        sidebarBackdrop.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        sidebarBackdrop.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    // Calculate relative link from current page to target page path
+    function getRelativeLink(targetPath) {
+        if (!window.CURRENT_PAGE) return targetPath;
+        const currentCategory = window.CURRENT_PAGE.category;
+        const prefix = currentCategory ? '../' : './';
+        return `${prefix}${targetPath}`;
+    }
+
+    // Multi-page Search Engine using search-index.js
     function handleSearch(query) {
         const cleanQuery = query.toLowerCase().trim();
         
@@ -244,14 +215,18 @@
 
         clearSearchBtn.style.display = 'block';
 
-        // Filter flatPages
-        const matches = flatPages.filter(page => {
-            const textContent = page.element.textContent.toLowerCase();
+        if (!window.AVENX_DOCS_INDEX) {
+            searchResults.innerHTML = '<div class="no-results-msg">Search index loading...</div>';
+            searchResults.style.display = 'block';
+            return;
+        }
+
+        const matches = window.AVENX_DOCS_INDEX.filter(page => {
             return (
-                page.pageTitle.toLowerCase().includes(cleanQuery) ||
-                page.sectionTitle.toLowerCase().includes(cleanQuery) ||
+                page.title.toLowerCase().includes(cleanQuery) ||
+                page.category.toLowerCase().includes(cleanQuery) ||
                 page.keywords.some(kw => kw.toLowerCase().includes(cleanQuery)) ||
-                textContent.includes(cleanQuery)
+                page.text.toLowerCase().includes(cleanQuery)
             );
         });
 
@@ -260,7 +235,7 @@
         } else {
             let dropdownHtml = '';
             matches.slice(0, 5).forEach(match => {
-                const textContent = match.element.textContent.replace(/\s+/g, ' ');
+                const textContent = match.text;
                 const queryIndex = textContent.toLowerCase().indexOf(cleanQuery);
                 let snippet = '';
                 
@@ -272,8 +247,10 @@
                     snippet = textContent.substring(0, 100).trim() + '...';
                 }
 
-                dropdownHtml += `<a href="#/${match.id}" class="search-result-item">
-                    <div class="result-title">${match.pageTitle}</div>
+                const relativeLink = getRelativeLink(match.path);
+
+                dropdownHtml += `<a href="${relativeLink}" class="search-result-item">
+                    <div class="result-title">${match.title}</div>
                     <div class="result-snippet">${snippet}</div>
                 </a>`;
             });
@@ -285,62 +262,79 @@
 
     // Event Listeners Configuration
     function setupEvents() {
-        // Hash routing
-        window.addEventListener('hashchange', loadRoute);
-
         // Mobile sidebar navigation toggling
-        mobileToggle.addEventListener('click', () => {
-            if (sidebar.classList.contains('open')) {
-                closeSidebar();
-            } else {
-                openSidebar();
-            }
-        });
+        if (mobileToggle && sidebar) {
+            mobileToggle.addEventListener('click', () => {
+                if (sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            });
+        }
 
-        sidebarBackdrop.addEventListener('click', closeSidebar);
+        if (sidebarBackdrop) {
+            sidebarBackdrop.addEventListener('click', closeSidebar);
+        }
 
         // Theme switching
-        themeToggle.addEventListener('click', toggleTheme);
+        if (themeToggle) {
+            themeToggle.addEventListener('click', toggleTheme);
+        }
 
         // Search inputs
-        searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
-        
-        clearSearchBtn.addEventListener('click', () => {
-            searchInput.value = '';
-            handleSearch('');
-        });
+        if (searchInput && clearSearchBtn && searchResults) {
+            searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
+            
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                handleSearch('');
+            });
 
-        // Hide search results dropdown on click outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.search-container')) {
+            // Hide search results dropdown on click outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    searchResults.style.display = 'none';
+                }
+            });
+
+            // Navigate search results using click
+            searchResults.addEventListener('click', () => {
                 searchResults.style.display = 'none';
-            }
-        });
+                searchInput.value = '';
+                clearSearchBtn.style.display = 'none';
+            });
+        }
 
         // Focus search container using '/' shortcut key
         document.addEventListener('keydown', (e) => {
-            if (e.key === '/' && document.activeElement !== searchInput) {
+            if (e.key === '/' && document.activeElement !== searchInput && searchInput) {
                 e.preventDefault();
                 searchInput.focus();
                 searchInput.select();
             }
         });
-
-        // Navigate search results using Enter or click
-        searchResults.addEventListener('click', () => {
-            searchResults.style.display = 'none';
-            searchInput.value = '';
-            clearSearchBtn.style.display = 'none';
-        });
     }
 
     // Application Bootstrap
     function bootstrap() {
-        initTheme();
-        initFlatPages();
-        loadRoute();
+        // Cache DOM elements
+        sidebar = document.getElementById('app-sidebar');
+        sidebarBackdrop = document.getElementById('sidebar-backdrop');
+        themeToggle = document.getElementById('theme-toggle');
+        mobileToggle = document.getElementById('mobile-toggle');
+        searchInput = document.getElementById('search-input');
+        clearSearchBtn = document.getElementById('clear-search');
+        searchResults = document.getElementById('search-results');
+
         setupEvents();
+        setupCodeBlocks();
+        setupAlerts();
+        highlightPageCode();
     }
+
+    // Run theme initialization synchronously to avoid color flashes
+    initTheme();
 
     // Run app once DOM load complete
     if (document.readyState === 'loading') {

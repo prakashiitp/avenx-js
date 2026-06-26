@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avenx-JS | Quick Start Tutorial</title>
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="Build your first reactive counter component with Avenx-JS in this quickstart tutorial.">
+    <meta name="keywords" content="Avenx-JS, frontend framework, reactive framework, scoped CSS, single file component, javascript router">
+    <meta name="author" content="Avenx Team">
+    
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Google Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <!-- App Container -->
+    <div class="app-layout">
+        
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="header-left">
+                <!-- Hamburger Button for Mobile -->
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Navigation Menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <a href="../getting-started/intro.html" class="logo">
+                    <span class="material-symbols-outlined logo-icon">rocket_launch</span>
+                    <span class="logo-text">Avenx<span class="logo-accent">-JS</span></span>
+                </a>
+                <span class="version-tag">v0.4.3</span>
+            </div>
+            
+            <div class="header-right">
+                <!-- Search Bar Container -->
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">
+                            <span class="material-symbols-outlined">search</span>
+                        </span>
+                        <input type="text" id="search-input" placeholder="Search docs... (Press '/' to focus)" aria-label="Search Documentation">
+                        <button id="clear-search" class="clear-search-btn" style="display: none;" aria-label="Clear Search">&times;</button>
+                    </div>
+                    <!-- Search Results Dropdown -->
+                    <div id="search-results" class="search-results-dropdown" style="display: none;"></div>
+                </div>
+                
+                <!-- Dark/Light Theme Toggle -->
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode">
+                    <span class="theme-icon-sun">
+                        <span class="material-symbols-outlined">light_mode</span>
+                    </span>
+                    <span class="theme-icon-moon">
+                        <span class="material-symbols-outlined">dark_mode</span>
+                    </span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Wrapper -->
+        <div class="main-container">
+            <!-- Sidebar Navigation -->
+            <aside class="app-sidebar" id="app-sidebar">
+                <nav class="sidebar-nav" id="sidebar-nav">
+                                        <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="getting-started">Getting Started</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../getting-started/intro.html" class="nav-page-link" data-page-id="intro">Introduction</a></li>
+                            <li><a href="../getting-started/install.html" class="nav-page-link" data-page-id="install">Installation</a></li>
+                            <li><a href="../getting-started/quickstart.html" class="nav-page-link active" data-page-id="quickstart">Quick Start Tutorial</a></li>
+                            <li><a href="../getting-started/structure.html" class="nav-page-link" data-page-id="structure">Project Structure</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="core-concepts">Core Concepts</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../core-concepts/components.html" class="nav-page-link" data-page-id="concepts-components">Component Structure</a></li>
+                            <li><a href="../core-concepts/reactivity.html" class="nav-page-link" data-page-id="concepts-reactivity">Reactive State</a></li>
+                            <li><a href="../core-concepts/computed.html" class="nav-page-link" data-page-id="concepts-computed">Computed Properties</a></li>
+                            <li><a href="../core-concepts/events.html" class="nav-page-link" data-page-id="concepts-events">Actions & Event Handling</a></li>
+                            <li><a href="../core-concepts/templates.html" class="nav-page-link" data-page-id="concepts-templates">Templates & Slots</a></li>
+                            <li><a href="../core-concepts/styling.html" class="nav-page-link" data-page-id="concepts-styling">Scoped & Global CSS</a></li>
+                            <li><a href="../core-concepts/bridges.html" class="nav-page-link" data-page-id="concepts-bridges">Shared State & Bridges</a></li>
+                            <li><a href="../core-concepts/routing.html" class="nav-page-link" data-page-id="concepts-routing">Pages & Routing</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="cli-reference">CLI Reference</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../cli-reference/commands.html" class="nav-page-link" data-page-id="cli-commands">CLI Commands</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="api-reference">API Reference</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../api-reference/app.html" class="nav-page-link" data-page-id="api-app">AvenxApp API</a></li>
+                            <li><a href="../api-reference/component.html" class="nav-page-link" data-page-id="api-component">AvenxComponent API</a></li>
+                            <li><a href="../api-reference/page.html" class="nav-page-link" data-page-id="api-page">AvenxPage API</a></li>
+                            <li><a href="../api-reference/router-guard.html" class="nav-page-link" data-page-id="api-router-guard">AvenxRouter & Guard API</a></li>
+                            <li><a href="../api-reference/utils.html" class="nav-page-link" data-page-id="api-utils">Utility Functions</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="troubleshooting">Troubleshooting</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../troubleshooting/errors.html" class="nav-page-link" data-page-id="errors-reference">Error Codes</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="nav-section-title" data-section="best-practices">Best Practices</h3>
+                        <ul class="nav-pages-list">
+                            <li><a href="../best-practices/guide.html" class="nav-page-link" data-page-id="best-practices-guide">Best Practices</a></li>
+                        </ul>
+                    </div>
+
+                </nav>
+            </aside>
+            
+            <!-- Backdrop for Mobile Sidebar -->
+            <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+            <!-- Content Area -->
+            <main class="content-wrapper">
+                <!-- Breadcrumbs -->
+                <div class="breadcrumbs-container">
+                    <nav class="breadcrumbs" id="breadcrumbs" aria-label="Breadcrumb">
+                        <span class="crumb"><a href="../getting-started/intro.html">Docs</a></span>
+                        <span class="crumb-separator">/</span>
+                        <span class="crumb" id="crumb-section">Getting Started</span>
+                        <span class="crumb-separator">/</span>
+                        <span class="crumb active" id="crumb-page">Quick Start Tutorial</span>
+                    </nav>
+                </div>
+                
+                <!-- Main Reading Pane -->
+                <div class="article-content" id="article-content">
+                    <article class="doc-page active" id="page-quickstart" data-keywords="quickstart tutorial counter generate serve first component">
+<h1>Quick Start Tutorial</h1>
+                        <p>Let's create a fully interactive Counter component in just a few minutes.</p>
+
+                        <h3>Step 1: Scaffold a Project</h3>
+                        <p>Create an empty directory, navigate into it, and initialize your project:</p>
+                        <pre><code class="language-bash">mkdir my-avenx-app
+cd my-avenx-app
+npx avenx init</code></pre>
+                        <p>This creates the basic workspace layout: <code>src/</code> folder, <code>index.html</code>, and config files.</p>
+
+                        <h3>Step 2: Generate a Component</h3>
+                        <p>Generate a new component named <code>counter</code> using the CLI generator:</p>
+                        <pre><code class="language-bash">npx avenx g counter</code></pre>
+                        <p>This creates <code>src/components/counter/counter.component.js</code> and <code>counter.component.css</code>, and registers it in <code>src/main.app.js</code>.</p>
+
+                        <h3>Step 3: Define Component Logic & Template</h3>
+                        <p>Open <code>src/components/counter/counter.component.js</code> and update it as follows:</p>
+                        <pre><code class="language-html">&lt;state count="0" title="Avenx Counter" /&gt;
+
+&lt;computed name="doubleCount" value="count * 2" /&gt;
+
+&lt;action name="increment"&gt;
+    state.count++;
+&lt;/action&gt;
+
+&lt;action name="decrement"&gt;
+    state.count--;
+&lt;/action&gt;
+
+&lt;div class="counter-card"&gt;
+    &lt;h2&gt;{{ title }}&lt;/h2&gt;
+    &lt;p class="number"&gt;Value: {{ count }} (Double: {{ doubleCount }})&lt;/p&gt;
+    &lt;div class="buttons"&gt;
+        &lt;button @click="decrement()"&gt;Minus&lt;/button&gt;
+        &lt;button @click="increment()"&gt;Plus&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+                        <h3>Step 4: Define Scoped CSS</h3>
+                        <p>Open <code>src/components/counter/counter.component.css</code> and define your scoped styles:</p>
+                        <pre><code class="language-css">&lt;@global&gt;
+    @def brand-color #4f46e5;
+    @def text-dark #1f2937;
+&lt;/@global&gt;
+
+&lt;@css&gt;
+    .counter-card {
+        padding: 2rem;
+        border-radius: 12px;
+        background: #f9fafb;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 320px;
+        margin: 2rem auto;
+    }
+
+    .number {
+        font-size: 1.25rem;
+        color: var(--text-dark);
+        margin: 1rem 0;
+    }
+
+    button {
+        background-color: var(--brand-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        margin: 0.25rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: opacity 0.2s;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+&lt;/@css&gt;</code></pre>
+
+                        <h3>Step 5: Run the Development Server</h3>
+                        <p>Launch the built-in development server with live reload:</p>
+                        <pre><code class="language-bash">npx avenx serve</code></pre>
+                        <p>Your browser will open to <code>http://localhost:3000</code>. Modify code in real-time and watch it hot-reload!</p>
+</article>
+                </div>
+                
+                <!-- Page Navigation Footer -->
+                <footer class="page-footer">
+                                        <a href="../getting-started/install.html" id="prev-page-btn" class="footer-nav-btn prev">
+                        <span class="material-symbols-outlined arrow">west</span>
+                        <div class="btn-labels">
+                            <span class="nav-direction">Previous</span>
+                            <span class="nav-title" id="prev-page-title">Installation</span>
+                        </div>
+                    </a>
+                    <a href="../getting-started/structure.html" id="next-page-btn" class="footer-nav-btn next">
+                        <div class="btn-labels">
+                            <span class="nav-direction">Next</span>
+                            <span class="nav-title" id="next-page-title">Project Structure</span>
+                        </div>
+                        <span class="material-symbols-outlined arrow">east</span>
+                    </a>
+
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Script Files -->
+    <script>
+        window.CURRENT_PAGE = {
+            id: "quickstart",
+            category: "getting-started",
+            filename: "quickstart.html"
+        };
+    </script>
+    <script src="../search-index.js"></script>
+    <script src="../app.js"></script>
+</body>
+
+</html>
