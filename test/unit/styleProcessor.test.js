@@ -51,6 +51,20 @@ try {
     assert.ok(generatedCss.includes(`@supports (display: grid) {`), 'Should retain @supports query');
     assert.ok(generatedCss.includes(`.${hash} .grid { display: grid; }`), 'Should scope nested selectors inside @supports');
 
+    // Verify mergeClassIntoTag edge cases
+    const sp3 = new StyleProcessor();
+    const tagDataClass = sp3.mergeClassIntoTag('div data-class="foo"', 'my-hash');
+    assert.strictEqual(tagDataClass, 'div data-class="foo" class="my-hash"', 'Should not merge into data-class');
+
+    const tagCustomClass = sp3.mergeClassIntoTag('div custom-class="foo"', 'my-hash');
+    assert.strictEqual(tagCustomClass, 'div custom-class="foo" class="my-hash"', 'Should not merge into custom-class');
+
+    const tagClassDouble = sp3.mergeClassIntoTag('div class="foo"', 'my-hash');
+    assert.strictEqual(tagClassDouble, 'div class="my-hash foo"', 'Should merge into existing class attribute (double quotes)');
+
+    const tagClassSingle = sp3.mergeClassIntoTag("div class='foo'", 'my-hash');
+    assert.strictEqual(tagClassSingle, "div class='my-hash foo'", 'Should merge into existing class attribute (single quotes)');
+
     console.log('  ✅ StyleProcessor tests passed!');
 } catch (error) {
     console.error('❌ StyleProcessor tests failed!');
