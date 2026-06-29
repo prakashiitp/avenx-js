@@ -28,6 +28,7 @@ Every contribution — whether code, documentation, or ideas — helps move the 
 - [@prakashiitp](https://github.com/prakashiitp) — First external contributor 🚀
 - [@Nawal-Shahid](https://github.com/Nawal-Shahid)
 - [@vIktoiiaa](https://github.com/vIktoiiaa)
+- [@ramizqazi](https://github.com/ramizqazi)
 
 ---
 
