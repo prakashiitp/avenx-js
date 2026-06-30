@@ -18,7 +18,7 @@ async function testSvgNamespaceRendering() {
        *
        * @param htmlString
        */
-      parseFromString(htmlString) {
+      parseFromString() {
         // Return a tree structure: body -> svg -> circle
         const body = new MockDOMElement('body');
         const svg = new MockDOMElement('svg'); // Defaults to HTML namespace

@@ -1,6 +1,5 @@
 const assert = require('assert');
 const { AvenxApp } = require('../../lib/core/runtime/AvenxApp');
-const { AvenxRouter } = require('../../lib/core/runtime/AvenxRouter');
 const { AvenxGuard } = require('../../lib/core/runtime/AvenxGuard');
 const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
 
@@ -114,7 +113,7 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
        * @param to
        * @param from
        */
-      canActivate(to, from) {
+      canActivate() {
         guardCalled = true;
         if (redirectTarget) return redirectTarget;
         return allowTransition;

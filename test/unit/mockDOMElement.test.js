@@ -1,4 +1,3 @@
-const assert = require('assert');
 const { AvenxComponent } = require('../../lib/core/runtime/AvenxComponent');
 // Importieren des zentralen QS-Helpers für Mocks und Globals
 const { MockDOMElement, setupDOMMock, teardownDOMMock } = require('../helpers/dom-mock');

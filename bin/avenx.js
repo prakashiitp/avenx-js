@@ -354,7 +354,7 @@ class AvenxCLI {
    *
    * @param args
    */
-  checkProject(args = []) {
+  checkProject() {
     const originalWarn = console.warn;
     let warningCount = 0;
 

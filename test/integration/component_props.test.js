@@ -126,7 +126,7 @@ class MockTextNode extends MockNode {
    *
    * @param deep
    */
-  cloneNode(deep) {
+  cloneNode() {
     return new MockTextNode(this.textContent);
   }
 }
@@ -498,7 +498,7 @@ global.DOMParser = class {
    * @param html
    * @param type
    */
-  parseFromString(html, type) {
+  parseFromString(html) {
     const body = createMockElementNode('body');
     const parsed = parseHTML(html);
     parsed.forEach((c) => body.appendChild(c));

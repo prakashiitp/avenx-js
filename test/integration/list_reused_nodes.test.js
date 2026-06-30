@@ -122,7 +122,7 @@ class MockTextNode extends MockNode {
    *
    * @param deep
    */
-  cloneNode(deep) {
+  cloneNode() {
     return new MockTextNode(this.textContent);
   }
 }
@@ -494,7 +494,7 @@ global.DOMParser = class {
    * @param html
    * @param type
    */
-  parseFromString(html, type) {
+  parseFromString(html) {
     const body = createMockElementNode('body');
     const parsed = parseHTML(html);
     parsed.forEach((c) => body.appendChild(c));
@@ -631,13 +631,13 @@ global.Node = {
     console.log('🧪 Testing ListManager event unbinding on element removal...');
 
     const mockEvaluator = {
-      evaluateExpression(expr, scope, state) {
+      evaluateExpression(_, scope) {
         return scope.items || [];
       },
     };
 
     const mockRenderer = {
-      render(template, evalFn) {
+      render() {
         return '<li>item</li>';
       },
     };

@@ -29,7 +29,7 @@ const createMockElement = (tagName, value = '', attrs = {}, nodeType = 1) => {
     addEventListener(event, callback) {
       listeners[event] = callback;
     },
-    removeEventListener(event, callback) {
+    removeEventListener(event) {
       delete listeners[event];
     },
     appendChild(child) {

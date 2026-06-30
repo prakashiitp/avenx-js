@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 const { performance } = require('perf_hooks');
 const StyleProcessor = require('../lib/compiler/StyleProcessor');
 const ComponentParser = require('../lib/compiler/ComponentParser');

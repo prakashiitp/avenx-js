@@ -123,7 +123,7 @@ class MockDOMElement {
    *
    * @param selector
    */
-  querySelectorAll(selector) {
+  querySelectorAll() {
     // Gibt eine leere Liste zurück, da dieses Element keine verschachtelten slot-Elemente hat
     return [];
   }

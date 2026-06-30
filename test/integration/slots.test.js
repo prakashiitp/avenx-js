@@ -1,6 +1,4 @@
 const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
 const { AvenxComponent } = require('../../lib/core/runtime/AvenxComponent');
 const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
 const StyleProcessor = require('../../lib/compiler/StyleProcessor');
@@ -126,7 +124,7 @@ class MockTextNode extends MockNode {
    *
    * @param deep
    */
-  cloneNode(deep) {
+  cloneNode() {
     return new MockTextNode(this.textContent);
   }
 }
@@ -498,7 +496,7 @@ global.DOMParser = class {
    * @param html
    * @param type
    */
-  parseFromString(html, type) {
+  parseFromString(html) {
     const body = createMockElementNode('body');
     const parsed = parseHTML(html);
     parsed.forEach((c) => body.appendChild(c));

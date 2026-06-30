@@ -24,7 +24,7 @@ function testDomParserErrorHandling() {
          *
          * @param htmlString
          */
-        parseFromString(htmlString) {
+        parseFromString() {
           const body = new MockDOMElement('body');
           const parserError = new MockDOMElement('parsererror');
 

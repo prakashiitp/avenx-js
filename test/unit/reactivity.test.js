@@ -11,7 +11,7 @@ global.document = {
   querySelector: () => mockElement,
 };
 
-const { ProxyHandlerFactory, isReactiveTarget } = require('../../lib/core/reactive/proxyHandler');
+const { isReactiveTarget } = require('../../lib/core/reactive/proxyHandler');
 const { StateFactory } = require('../../lib/core/reactive/createState');
 const { AvenxApp } = require('../../lib/core/runtime/AvenxApp');
 

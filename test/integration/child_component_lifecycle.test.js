@@ -97,7 +97,7 @@ class MockTextNode extends MockNode {
    *
    * @param deep
    */
-  cloneNode(deep) {
+  cloneNode() {
     return new MockTextNode(this.textContent);
   }
 }
@@ -371,7 +371,7 @@ global.DOMParser = class {
    * @param html
    * @param type
    */
-  parseFromString(html, type) {
+  parseFromString(html) {
     const body = createMockElementNode('body');
     const parsed = parseHTML(html);
     parsed.forEach((c) => body.appendChild(c));
@@ -513,7 +513,7 @@ global.Node = {
       'A new child component instance should be constructed',
     );
 
-    const secondChildInstance = lastChildInstance;
+
 
     // 5. Unmount Parent Page (unmounts all nested child components)
     parentPage.unmount();

@@ -99,7 +99,7 @@ try {
     tagName: 'DIV',
     attributes: [],
     childNodes: [childMock],
-    getAttribute(name) {
+    getAttribute() {
       return null;
     },
   };

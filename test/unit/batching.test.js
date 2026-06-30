@@ -18,7 +18,7 @@ const mockElement = {
 };
 
 global.document = {
-  querySelector: (selector) => {
+  querySelector: () => {
     return mockElement;
   },
 };
